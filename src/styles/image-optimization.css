@@ -1,0 +1,51 @@
+/* Image optimization for service showcases */
+.service-showcase-image {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.carousel-container {
+  max-height: 600px;
+  overflow: hidden;
+}
+
+@media (max-width: 768px) {
+  .carousel-container {
+    max-height: 400px;
+  }
+}
+
+@media (max-width: 480px) {
+  .carousel-container {
+    max-height: 300px;
+  }
+}
+
+/* Ensure thumbnails don't exceed reasonable size */
+.thumbnail-item {
+  width: 64px;
+  height: 64px;
+  flex-shrink: 0;
+}
+
+/* Video optimization */
+video {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Image lazy loading enhancement */
+img {
+  will-change: opacity;
+  transition: opacity 0.3s ease-in-out;
+}
+
+img[loading="lazy"] {
+  opacity: 0.8;
+}
+
+img[loading="lazy"].loaded {
+  opacity: 1;
+}
