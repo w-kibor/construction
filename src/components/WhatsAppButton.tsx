@@ -2,8 +2,8 @@ import { MessageCircle } from "lucide-react";
 
 export function WhatsAppButton() {
   const handleWhatsAppClick = () => {
-    // Replace with actual WhatsApp number
-    const phoneNumber = "254XXXXXXXXX"; // Kenya country code
+    // Brandon's WhatsApp number (Kenya country code +254 784 691 299)
+    const phoneNumber = "254784691299";
     const message = "Hi, I'd like to inquire about your construction services.";
     window.open(
       `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`,
