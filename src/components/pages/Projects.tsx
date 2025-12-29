@@ -1,6 +1,6 @@
 import { ProjectCard } from "../ProjectCard";
 import { ServiceShowcase } from "../ServiceShowcase";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Button } from "../ui/button";
 import { X } from "lucide-react";
 import { ImageWithFallback } from "../figma/ImageWithFallback";
@@ -16,25 +16,69 @@ interface Project {
   duration: string;
 }
 
-// Local asset paths
-const EPOXY_ASSETS = [
-  { src: "/assets/epoxy/WhatsApp Image 2025-12-16 at 6.10.03 PM 2.jpeg", type: "image" as const, alt: "Epoxy Floor 1" },
-  { src: "/assets/epoxy/WhatsApp Image 2025-12-16 at 6.10.03 PM.jpeg", type: "image" as const, alt: "Epoxy Floor 2" },
-  { src: "/assets/epoxy/WhatsApp Image 2025-12-16 at 6.10.04 PM 4.jpeg", type: "image" as const, alt: "Epoxy Floor 3" },
-  { src: "/assets/epoxy/WhatsApp Video 2025-12-16 at 6.10.04 PM 3.mp4", type: "video" as const, alt: "Epoxy Application Video" },
-];
+// Media type for service showcases
+type Media = { src: string; type: "image" | "video"; alt: string };
 
-const WATERPROOFING_ASSETS = [
-  { src: "/assets/waterproofing/WhatsApp Image 2025-12-16 at 6.07.14 PM.jpeg", type: "image" as const, alt: "Waterproofing 1" },
-  { src: "/assets/waterproofing/WhatsApp Image 2025-12-16 at 6.07.16 PM 3.jpeg", type: "image" as const, alt: "Waterproofing 2" },
-  { src: "/assets/waterproofing/WhatsApp Video 2025-12-16 at 6.07.15 PM.mp4", type: "video" as const, alt: "Waterproofing Process Video" },
-];
+// Build Epoxy media dynamically from the project's source folder so new files show automatically
+const useEpoxyMedias = (): Media[] => {
+  // Import all supported media under src/components/epoxy
+  const modules = import.meta.glob("../epoxy/*.{jpg,jpeg,png,webp,mp4,webm}", {
+    eager: true,
+    query: "?url",
+    import: "default",
+  }) as Record<string, string>;
 
-const TERRAZZO_ASSETS = [
-  { src: "/assets/terrazzo/WhatsApp Image 2025-12-16 at 6.02.30 PM 2.jpeg", type: "image" as const, alt: "Terrazzo Floor 1" },
-  { src: "/assets/terrazzo/WhatsApp Image 2025-12-16 at 6.02.30 PM 3.jpeg", type: "image" as const, alt: "Terrazzo Floor 2" },
-  { src: "/assets/terrazzo/WhatsApp Image 2025-12-16 at 6.02.30 PM.jpeg", type: "image" as const, alt: "Terrazzo Floor 3" },
-];
+  const items: Media[] = Object.entries(modules)
+    .map(([path, url]) => {
+      const filename = path.split("/").pop() ?? "epoxy";
+      const ext = filename.split(".").pop()?.toLowerCase();
+      const isVideo = ext === "mp4" || ext === "webm";
+      return {
+        src: url,
+        type: isVideo ? "video" : "image",
+        alt: `Epoxy ${filename}`,
+      } as Media;
+    })
+    // Optional: stable order by filename
+    .sort((a, b) => a.alt.localeCompare(b.alt));
+
+  return items;
+};
+
+// Build Waterproofing and Terrazzo medias dynamically (folders under src/components)
+const useWaterproofingMedias = (): Media[] => {
+  const modules = import.meta.glob("../waterproofing/*.{jpg,jpeg,png,webp,mp4,webm}", {
+    eager: true,
+    query: "?url",
+    import: "default",
+  }) as Record<string, string>;
+
+  return Object.entries(modules)
+    .map(([path, url]) => {
+      const filename = path.split("/").pop() ?? "waterproofing";
+      const ext = filename.split(".").pop()?.toLowerCase();
+      const isVideo = ext === "mp4" || ext === "webm";
+      return { src: url, type: isVideo ? "video" : "image", alt: `Waterproofing ${filename}` } as Media;
+    })
+    .sort((a, b) => a.alt.localeCompare(b.alt));
+};
+
+const useTerrazoMedias = (): Media[] => {
+  const modules = import.meta.glob("../terrazo/*.{jpg,jpeg,png,webp,mp4,webm}", {
+    eager: true,
+    query: "?url",
+    import: "default",
+  }) as Record<string, string>;
+
+  return Object.entries(modules)
+    .map(([path, url]) => {
+      const filename = path.split("/").pop() ?? "terrazo";
+      const ext = filename.split(".").pop()?.toLowerCase();
+      const isVideo = ext === "mp4" || ext === "webm";
+      return { src: url, type: isVideo ? "video" : "image", alt: `Terrazzo ${filename}` } as Media;
+    })
+    .sort((a, b) => a.alt.localeCompare(b.alt));
+};
 
 const projects: Project[] = [
   {
@@ -102,6 +146,11 @@ const projects: Project[] = [
 export function Projects() {
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+
+  // Memoize epoxy medias to avoid rebuilding on each render
+  const EPOXY_ASSETS: Media[] = useMemo(() => useEpoxyMedias(), []);
+  const WATERPROOFING_ASSETS: Media[] = useMemo(() => useWaterproofingMedias(), []);
+  const TERRAZZO_ASSETS: Media[] = useMemo(() => useTerrazoMedias(), []);
 
   const categories = ["All", "Epoxy", "Terrazzo", "Waterproofing"];
 
