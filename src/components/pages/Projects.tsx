@@ -19,27 +19,46 @@ interface Project {
 // Media type for service showcases
 type Media = { src: string; type: "image" | "video"; alt: string };
 
-// Build Epoxy media dynamically from the project's source folder so new files show automatically
+// Build Epoxy media dynamically from public/assets/epoxy folder
 const useEpoxyMedias = (): Media[] => {
-  // Import all supported media under src/components/epoxy
-  const modules = import.meta.glob("../epoxy/*.{jpg,jpeg,png,webp,mp4,webm}", {
-    eager: true,
-    query: "?url",
-    import: "default",
-  }) as Record<string, string>;
+  // List of all epoxy media files in public/assets/epoxy
+  const epoxyFiles = [
+    "epoxy 4.jpg",
+    "epoxy 5.jpg",
+    "epoxy 6.jpg",
+    "epoxy 7.jpg",
+    "epoxy 8.jpg",
+    "epoxy 9.jpg",
+    "epoxy 10.jpg",
+    "epoxy 11.jpg",
+    "epoxy 12.jpg",
+    "epoxy 13.jpg",
+    "epoxy 14.jpg",
+    "epoxy 15.jpg",
+    "epoxy 16.jpg",
+    "epoxy 17.jpg",
+    "epoxy 18.jpg",
+    "epoxy 19.jpg",
+    "epoxy 20.jpg",
+    "epoxy 21.jpg",
+    "epoxy 22.jpg",
+    "epoxy 23.mp4",
+    "WhatsApp Image 2025-12-16 at 6.10.03 PM 2.jpeg",
+    "WhatsApp Image 2025-12-16 at 6.10.03 PM.jpeg",
+    "WhatsApp Image 2025-12-16 at 6.10.04 PM 4.jpeg",
+    "WhatsApp Video 2025-12-16 at 6.10.04 PM 3.mp4",
+  ];
 
-  const items: Media[] = Object.entries(modules)
-    .map(([path, url]) => {
-      const filename = path.split("/").pop() ?? "epoxy";
+  const items: Media[] = epoxyFiles
+    .map((filename) => {
       const ext = filename.split(".").pop()?.toLowerCase();
       const isVideo = ext === "mp4" || ext === "webm";
       return {
-        src: url,
+        src: `/assets/epoxy/${filename}`,
         type: isVideo ? "video" : "image",
         alt: `Epoxy ${filename}`,
       } as Media;
     })
-    // Optional: stable order by filename
     .sort((a, b) => a.alt.localeCompare(b.alt));
 
   return items;
