@@ -100,13 +100,13 @@ export function Home({ onNavigate }: HomeProps) {
               icon={Droplets}
               title="Waterproofing Solutions"
               description="Long-lasting waterproofing for roofs, basements, and bathrooms to prevent leaks and moisture damage."
-              image="https://images.unsplash.com/photo-1591645321243-3adc1e75cfdc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx3YXRlcnByb29maW5nJTIwY29uc3RydWN0aW9uJTIwd29ya3xlbnwxfHx8fDE3NjExMTk3NjN8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+              image="/assets/waterproofing/waterproofing-2025-12-16-180714.jpeg"
             />
             <ServiceCard
               icon={Sparkles}
               title="Epoxy Flooring"
               description="Stylish, seamless, and durable epoxy finishes for industrial and residential spaces."
-              image="https://images.unsplash.com/photo-1741105820127-97dd1aaafe87?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxlcG94eSUyMGZsb29yJTIwY29uc3RydWN0aW9ufGVufDF8fHx8MTc2MTExOTc2M3ww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+              image="/assets/epoxy/epoxy%2026.jpeg"
             />
             <ServiceCard
               icon={Layers}
