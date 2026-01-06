@@ -112,7 +112,7 @@ export function Home({ onNavigate }: HomeProps) {
               icon={Layers}
               title="Terrazzo Flooring"
               description="Elegant terrazzo finishes combining durability and design for modern interiors."
-              image="https://images.unsplash.com/photo-1614494705729-96266717f53b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx0ZXJyYXp6byUyMGZsb29yaW5nJTIwcGF0dGVybnxlbnwxfHx8fDE3NjExMTk3NjN8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+              image="/assets/terrazzo/terrazzo%201.jpeg"
             />
           </div>
 
