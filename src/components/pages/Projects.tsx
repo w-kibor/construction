@@ -66,20 +66,32 @@ const useEpoxyMedias = (): Media[] => {
 
 // Build Waterproofing and Terrazzo medias dynamically (folders under src/components)
 const useWaterproofingMedias = (): Media[] => {
-  const modules = import.meta.glob("../waterproofing/*.{jpg,jpeg,png,webp,mp4,webm}", {
-    eager: true,
-    query: "?url",
-    import: "default",
-  }) as Record<string, string>;
+  // List of all waterproofing media files in public/assets/waterproofing
+  const waterproofingFiles = [
+    "vid 2.mp4",
+    "vid 3.mp4",
+    "vid 4.mp4",
+    "vid 5.mp4",
+    "vid 6.mp4",
+    "waterproofing vid 1.mp4",
+    "waterproofing-2025-12-16-180714.jpeg",
+    "waterproofing-2025-12-16-180715.mp4",
+    "waterproofing-2025-12-16-180716-3.jpeg",
+  ];
 
-  return Object.entries(modules)
-    .map(([path, url]) => {
-      const filename = path.split("/").pop() ?? "waterproofing";
+  const items: Media[] = waterproofingFiles
+    .map((filename) => {
       const ext = filename.split(".").pop()?.toLowerCase();
       const isVideo = ext === "mp4" || ext === "webm";
-      return { src: url, type: isVideo ? "video" : "image", alt: `Waterproofing ${filename}` } as Media;
+      return {
+        src: `/assets/waterproofing/${filename}`,
+        type: isVideo ? "video" : "image",
+        alt: `Waterproofing ${filename}`,
+      } as Media;
     })
     .sort((a, b) => a.alt.localeCompare(b.alt));
+
+  return items;
 };
 
 const useTerrazoMedias = (): Media[] => {
