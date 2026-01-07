@@ -43,6 +43,16 @@ const useEpoxyMedias = (): Media[] => {
     "epoxy 21.jpg",
     "epoxy 22.jpg",
     "epoxy 23.mp4",
+    "epoxy 24.jpg",
+    "epoxy 25.jpg",
+    "epoxy 26.jpeg",
+    "epoxy 28.mp4",
+    "video 1.mp4",
+    "video 2.mp4",
+    "video 3.mp4",
+    "video 4.mp4",
+    "video 5.mp4",
+    "video 6.mp4",
     "WhatsApp Image 2025-12-16 at 6.10.03 PM 2.jpeg",
     "WhatsApp Image 2025-12-16 at 6.10.03 PM.jpeg",
     "WhatsApp Image 2025-12-16 at 6.10.04 PM 4.jpeg",
@@ -95,20 +105,36 @@ const useWaterproofingMedias = (): Media[] => {
 };
 
 const useTerrazoMedias = (): Media[] => {
-  const modules = import.meta.glob("../terrazo/*.{jpg,jpeg,png,webp,mp4,webm}", {
-    eager: true,
-    query: "?url",
-    import: "default",
-  }) as Record<string, string>;
+  // List of all terrazzo media files in public/assets/terrazzo
+  const terrazzoFiles = [
+    "ter2.jpeg",
+    "ter3.jpeg",
+    "ter4.jpeg",
+    "ter5.jpeg",
+    "terrazzo 1.jpeg",
+    "tvid1.mp4",
+    "tvid2.mp4",
+    "tvid3.mp4",
+    "tvid4.mp4",
+    "tvid5.mp4",
+    "WhatsApp Image 2025-12-16 at 6.02.30 PM.jpeg",
+    "WhatsApp Image 2025-12-16 at 6.02.30 PM 2.jpeg",
+    "WhatsApp Image 2025-12-16 at 6.02.30 PM 3.jpeg",
+  ];
 
-  return Object.entries(modules)
-    .map(([path, url]) => {
-      const filename = path.split("/").pop() ?? "terrazo";
+  const items: Media[] = terrazzoFiles
+    .map((filename) => {
       const ext = filename.split(".").pop()?.toLowerCase();
       const isVideo = ext === "mp4" || ext === "webm";
-      return { src: url, type: isVideo ? "video" : "image", alt: `Terrazzo ${filename}` } as Media;
+      return {
+        src: `/assets/terrazzo/${filename}`,
+        type: isVideo ? "video" : "image",
+        alt: `Terrazzo ${filename}`,
+      } as Media;
     })
     .sort((a, b) => a.alt.localeCompare(b.alt));
+
+  return items;
 };
 
 const projects: Project[] = [
