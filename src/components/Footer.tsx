@@ -72,7 +72,9 @@ export function Footer({ onNavigate }: FooterProps) {
             {/* Social Media */}
             <div className="flex gap-3 mt-4">
               <a
-                href="#"
+                href="https://www.facebook.com/profile.php?id=61586064698060"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="bg-white/10 hover:bg-[#F5A623] p-2 rounded-full transition-colors"
                 aria-label="Facebook"
               >
