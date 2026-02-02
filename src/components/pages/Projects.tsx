@@ -46,11 +46,12 @@ const useEpoxyMedias = (): Media[] => {
     "epoxy 24.jpg",
     "epoxy 25.jpg",
     "epoxy 26.jpeg",
-    "epoxy 27.jpeg",
     "epoxy 28.mp4",
-    "epoxy 29.mp4",
-    "epoxy 30.jpeg",
-    "epoxy 31.jpeg",
+    "epoxy e1.jpeg",
+    "epoxy e2.mp4",
+    "epoxy e3.mp4",
+    "epoxy e4.jpeg",
+    "epoxy e5.jpeg",
     "video 1.mp4",
     "video 2.mp4",
     "video 3.mp4",
@@ -67,8 +68,9 @@ const useEpoxyMedias = (): Media[] => {
     .map((filename) => {
       const ext = filename.split(".").pop()?.toLowerCase();
       const isVideo = ext === "mp4" || ext === "webm";
+      const encodedFilename = encodeURIComponent(filename);
       return {
-        src: `/assets/epoxy/${filename}`,
+        src: `/assets/epoxy/${encodedFilename}`,
         type: isVideo ? "video" : "image",
         alt: `Epoxy ${filename}`,
       } as Media;
@@ -87,6 +89,8 @@ const useWaterproofingMedias = (): Media[] => {
     "vid 4.mp4",
     "vid 5.mp4",
     "vid 6.mp4",
+    "waterproofing e1.mp4",
+    "waterproofing e2.mp4",
     "waterproofing vid 1.mp4",
     "waterproofing-2025-12-16-180714.jpeg",
     "waterproofing-2025-12-16-180715.mp4",
@@ -97,8 +101,9 @@ const useWaterproofingMedias = (): Media[] => {
     .map((filename) => {
       const ext = filename.split(".").pop()?.toLowerCase();
       const isVideo = ext === "mp4" || ext === "webm";
+      const encodedFilename = encodeURIComponent(filename);
       return {
-        src: `/assets/waterproofing/${filename}`,
+        src: `/assets/waterproofing/${encodedFilename}`,
         type: isVideo ? "video" : "image",
         alt: `Waterproofing ${filename}`,
       } as Media;
@@ -130,8 +135,9 @@ const useTerrazoMedias = (): Media[] => {
     .map((filename) => {
       const ext = filename.split(".").pop()?.toLowerCase();
       const isVideo = ext === "mp4" || ext === "webm";
+      const encodedFilename = encodeURIComponent(filename);
       return {
-        src: `/assets/terrazzo/${filename}`,
+        src: `/assets/terrazzo/${encodedFilename}`,
         type: isVideo ? "video" : "image",
         alt: `Terrazzo ${filename}`,
       } as Media;
