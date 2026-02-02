@@ -1,9 +1,10 @@
 import { ProjectCard } from "../ProjectCard";
 import { ServiceShowcase } from "../ServiceShowcase";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Button } from "../ui/button";
 import { X } from "lucide-react";
 import { ImageWithFallback } from "../figma/ImageWithFallback";
+import { fetchProjectMediaByCategory } from "../../lib/sanityMedia";
 
 interface Project {
   id: number;
@@ -214,10 +215,41 @@ export function Projects() {
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
-  // Memoize epoxy medias to avoid rebuilding on each render
-  const EPOXY_ASSETS: Media[] = useMemo(() => useEpoxyMedias(), []);
-  const WATERPROOFING_ASSETS: Media[] = useMemo(() => useWaterproofingMedias(), []);
-  const TERRAZZO_ASSETS: Media[] = useMemo(() => useTerrazoMedias(), []);
+  const DEFAULT_EPOXY_ASSETS: Media[] = useMemo(() => useEpoxyMedias(), []);
+  const DEFAULT_WATERPROOFING_ASSETS: Media[] = useMemo(() => useWaterproofingMedias(), []);
+  const DEFAULT_TERRAZZO_ASSETS: Media[] = useMemo(() => useTerrazoMedias(), []);
+
+  const [epoxyMedias, setEpoxyMedias] = useState<Media[]>(DEFAULT_EPOXY_ASSETS);
+  const [waterproofingMedias, setWaterproofingMedias] = useState<Media[]>(DEFAULT_WATERPROOFING_ASSETS);
+  const [terrazzoMedias, setTerrazzoMedias] = useState<Media[]>(DEFAULT_TERRAZZO_ASSETS);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const loadSanityMedia = async () => {
+      try {
+        const [epoxy, waterproofing, terrazzo] = await Promise.all([
+          fetchProjectMediaByCategory("epoxy"),
+          fetchProjectMediaByCategory("waterproofing"),
+          fetchProjectMediaByCategory("terrazzo"),
+        ]);
+
+        if (!isMounted) return;
+
+        if (epoxy.length > 0) setEpoxyMedias(epoxy);
+        if (waterproofing.length > 0) setWaterproofingMedias(waterproofing);
+        if (terrazzo.length > 0) setTerrazzoMedias(terrazzo);
+      } catch {
+        // Keep local fallback media if Sanity is not configured or fetch fails
+      }
+    };
+
+    loadSanityMedia();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [DEFAULT_EPOXY_ASSETS, DEFAULT_TERRAZZO_ASSETS, DEFAULT_WATERPROOFING_ASSETS]);
 
   const categories = ["All", "Epoxy", "Terrazzo", "Waterproofing"];
 
@@ -242,7 +274,7 @@ export function Projects() {
         <ServiceShowcase
           title="Epoxy Flooring Solutions"
           description="Transform your spaces with our premium epoxy flooring installations. From residential homes to industrial warehouses, we deliver durable, high-gloss finishes that combine beauty with functionality. Our epoxy floors are resistant to stains, chemicals, and heavy traffic, making them ideal for any environment."
-          medias={EPOXY_ASSETS}
+          medias={epoxyMedias}
           features={[
             "High-gloss, seamless finish",
             "Chemical and stain resistant",
@@ -256,7 +288,7 @@ export function Projects() {
         <ServiceShowcase
           title="Waterproofing Services"
           description="Protect your property from water damage with our comprehensive waterproofing solutions. Whether it's basements, roofs, or foundations, we use industry-leading materials and techniques to ensure complete protection. Our team guarantees quality workmanship and long-lasting results."
-          medias={WATERPROOFING_ASSETS}
+          medias={waterproofingMedias}
           features={[
             "Basement and foundation waterproofing",
             "Roof waterproofing systems",
@@ -270,7 +302,7 @@ export function Projects() {
         <ServiceShowcase
           title="Terrazzo Flooring & Restoration"
           description="Experience the elegance of terrazzo flooring with our expert installation and restoration services. Terrazzo is a timeless material that brings sophistication to any space. We specialize in both new installations and restoration of existing terrazzo floors, bringing them back to their original beauty."
-          medias={TERRAZZO_ASSETS}
+          medias={terrazzoMedias}
           features={[
             "Custom color and design options",
             "Professional polishing and sealing",
